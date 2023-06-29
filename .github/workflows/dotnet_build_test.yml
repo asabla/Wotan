@@ -30,3 +30,6 @@ jobs:
 
     - name: Test
       run: dotnet test --no-build --verbosity normal
+
+    - name: Generate GraphQL schema
+      run: dotnet run --project ./src/Backend/Backend.Api/ -- schema export
