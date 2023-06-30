@@ -1,4 +1,8 @@
+using HotChocolate.Execution.Configuration;
 using HotChocolate.Types.Pagination;
+
+using Wotan.Integration.BattleBitAPI.Services;
+using Wotan.Integration.SteamAPI.Services;
 
 namespace Wotan.Backend.Api.GraphQL.Extensions;
 
@@ -27,7 +31,18 @@ internal static class GraphQLConfigurationExtensions
             .AddGraphQLTypes()
             .AddFiltering()
             .AddProjections()
-            .AddSorting();
+            .AddSorting()
+            .RegisterAPIServices();
+
+        return builder;
+    }
+
+    private static IRequestExecutorBuilder RegisterAPIServices(
+        this IRequestExecutorBuilder builder)
+    {
+        builder
+            .RegisterService<BattleBitAPIService>(ServiceKind.Resolver)
+            .RegisterService<SteamAPIService>(ServiceKind.Resolver);
 
         return builder;
     }
