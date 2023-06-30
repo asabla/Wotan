@@ -1,14 +1,15 @@
 using System.Net.Http.Json;
+using System.Text.Json;
 
 using Microsoft.Extensions.Logging;
 
-using Wotan.Integration.BattleBitAPI.Models;
+using Wotan.Integration.BattleBitAPI.Models.API;
 
 namespace Wotan.Integration.BattleBitAPI.Services;
 
 public interface IBattleBitAPIService
 {
-    Task<IReadOnlyList<ServerInfo>> GetAllServerAsync(
+    Task<IReadOnlyList<ServerAPIInfo>> GetAllServerAsync(
         CancellationToken cancellationToken = default);
 }
 
@@ -32,11 +33,15 @@ public class BattleBitAPIService : IBattleBitAPIService
             name: HTTPClientName);
     }
 
-    public async Task<IReadOnlyList<ServerInfo>> GetAllServerAsync(
+    public async Task<IReadOnlyList<ServerAPIInfo>> GetAllServerAsync(
         CancellationToken cancellationToken = default)
         => await _httpClient
-            .GetFromJsonAsync<IReadOnlyList<ServerInfo>>(
+            .GetFromJsonAsync<IReadOnlyList<ServerAPIInfo>>(
                 requestUri: "Servers/GetServerList",
+                options: new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                },
                 cancellationToken: cancellationToken)
             ?? default!;
 }

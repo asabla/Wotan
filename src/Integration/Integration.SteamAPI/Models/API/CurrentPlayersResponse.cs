@@ -1,4 +1,4 @@
-namespace Wotan.Integration.SteamAPI.Models;
+namespace Wotan.Integration.SteamAPI.Models.API;
 
 public class CurrentPlayersResponse
 {

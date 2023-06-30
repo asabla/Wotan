@@ -1,6 +1,6 @@
-namespace Wotan.Integration.BattleBitAPI.Models;
+namespace Wotan.Integration.BattleBitAPI.Models.API;
 
-public class ServerInfo
+public class ServerAPIInfo
 {
     public string AntiCheat { get; set; } = null!;
     public string Build { get; set; } = null!;

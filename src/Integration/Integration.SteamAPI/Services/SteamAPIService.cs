@@ -1,8 +1,9 @@
 using System.Net.Http.Json;
+using System.Text.Json;
 
 using Microsoft.Extensions.Logging;
 
-using Wotan.Integration.SteamAPI.Models;
+using Wotan.Integration.SteamAPI.Models.API;
 
 namespace Wotan.Integration.SteamAPI.Services;
 
@@ -11,7 +12,7 @@ public interface ISteamAPIService
     Task<SteamAppListResponse> GetAppListAsync(
         CancellationToken cancellationToken = default);
 
-    Task<SteamAppNewsResponse> GetNewsForApp(
+    Task<SteamAppNewsResponse> GetNewsForAppAsync(
         int appId,
         int take = 3,
         CancellationToken cancellationToken = default);
@@ -46,16 +47,24 @@ public class SteamAPIService : ISteamAPIService
         => await _httpClient
             .GetFromJsonAsync<SteamAppListResponse>(
                 requestUri: "ISteamApps/GetAppList/v0002/?format=json",
+                options: new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                },
                 cancellationToken: cancellationToken)
             ?? default!;
 
-    public async Task<SteamAppNewsResponse> GetNewsForApp(
+    public async Task<SteamAppNewsResponse> GetNewsForAppAsync(
         int appId,
         int take = 3,
         CancellationToken cancellationToken = default)
         => await _httpClient
             .GetFromJsonAsync<SteamAppNewsResponse>(
                 requestUri: $"ISteamNews/GetNewsForApp/v2/?appid={appId}&count={take}",
+                options: new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                },
                 cancellationToken: cancellationToken)
             ?? default!;
 
@@ -64,7 +73,11 @@ public class SteamAPIService : ISteamAPIService
         CancellationToken cancellationToken = default)
         => await _httpClient
             .GetFromJsonAsync<CurrentPlayersResponse>(
-                requestUri: $"SteamUserStats/GetNumberOfCurrenyPlayers/v1/?appid={appId}",
+                requestUri: $"ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid={appId}",
+                options: new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                },
                 cancellationToken: cancellationToken)
             ?? default!;
 }

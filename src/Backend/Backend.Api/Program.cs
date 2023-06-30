@@ -1,9 +1,14 @@
 using Wotan.Backend.Api.Settings;
 using Wotan.Backend.Api.GraphQL.Extensions;
 
+using Wotan.Integration.BattleBitAPI.Extensions;
+using Wotan.Integration.SteamAPI.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder
+    .ConfigureBattleBitAPIService()
+    .ConfigureSteamAPIService()
     .APIConfigurationSetup()
     .ConfigureGraphQLServer();
 
