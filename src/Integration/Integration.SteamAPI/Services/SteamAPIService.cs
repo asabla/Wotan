@@ -3,24 +3,11 @@ using System.Text.Json;
 
 using Microsoft.Extensions.Logging;
 
-using Wotan.Integration.SteamAPI.Models.API;
+using Wotan.Integration.SteamAPI.Models.API.ISteamApps;
+using Wotan.Integration.SteamAPI.Models.API.ISteamNews;
+using Wotan.Integration.SteamAPI.Models.API.ISteamUserStats;
 
 namespace Wotan.Integration.SteamAPI.Services;
-
-public interface ISteamAPIService
-{
-    Task<SteamAppListResponse> GetAppListAsync(
-        CancellationToken cancellationToken = default);
-
-    Task<SteamAppNewsResponse> GetNewsForAppAsync(
-        int appId,
-        int take = 3,
-        CancellationToken cancellationToken = default);
-
-    Task<CurrentPlayersResponse> GetPlayersCountAsync(
-        int appId,
-        CancellationToken cancellationToken = default);
-}
 
 public class SteamAPIService : ISteamAPIService
 {
@@ -54,6 +41,20 @@ public class SteamAPIService : ISteamAPIService
                 cancellationToken: cancellationToken)
             ?? default!;
 
+    public async Task<SteamGlobalAchievementResponse> GetGameAchievementStatsAsync(
+        int gameId,
+        CancellationToken cancellationToken = default)
+        => await _httpClient
+            .GetFromJsonAsync<SteamGlobalAchievementResponse>(
+                requestUri: $"ISteamUserStats/GetGlobalAchievementPercentagesForApp/v2/?gameId={gameId}",
+                options: new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowNamedFloatingPointLiterals
+                },
+                cancellationToken: cancellationToken)
+            ?? default!;
+
     public async Task<SteamAppNewsResponse> GetNewsForAppAsync(
         int appId,
         int take = 3,
@@ -80,4 +81,32 @@ public class SteamAPIService : ISteamAPIService
                 },
                 cancellationToken: cancellationToken)
             ?? default!;
+
+    public async Task<SteamServersAtAddressResponse> GetServersAtAddressAsync(
+        string address,
+        CancellationToken cancellationToken = default)
+        => await _httpClient
+            .GetFromJsonAsync<SteamServersAtAddressResponse>(
+                requestUri: $"ISteamApps/GetServersAtAddress/v1/?addr={address}",
+                options: new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                },
+                cancellationToken: cancellationToken)
+            ?? default!;
+
+    public async Task<SteamServerUpToDateCheckResponse> GetServerUpToDateCheckAsync(
+        int appId,
+        int version,
+        CancellationToken cancellationToken = default)
+        => await _httpClient
+            .GetFromJsonAsync<SteamServerUpToDateCheckResponse>(
+                requestUri: $"ISteamApps/UpToDateCheck/v1/?appid={appId}&version={version}",
+                options: new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                },
+                cancellationToken: cancellationToken)
+            ?? default!;
+
 }
