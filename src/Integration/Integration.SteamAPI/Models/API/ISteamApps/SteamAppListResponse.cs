@@ -1,4 +1,4 @@
-namespace Wotan.Integration.SteamAPI.Models.API;
+namespace Wotan.Integration.SteamAPI.Models.API.ISteamApps;
 
 public class SteamAppListResponse
 {
