@@ -10,8 +10,8 @@ internal static class SettingsValidationExtensions
     {
         optionsBuilder.Services.AddSingleton<IValidateOptions<TOptions>>(
             provider => new FluentValidationOptions<TOptions>(
-                name: optionsBuilder.Name,
-                serviceProvider: provider));
+                serviceProvider: provider,
+                name: optionsBuilder.Name));
 
         return optionsBuilder;
     }

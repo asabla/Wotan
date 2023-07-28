@@ -36,5 +36,4 @@ public sealed class BattleBitResolvers
                     QueuePlayers = x.QueuePlayers,
                     Region = x.Region.CastTo<RegionType>()
                 }).ToList());
-
 }

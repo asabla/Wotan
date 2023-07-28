@@ -5,7 +5,7 @@ namespace Wotan.Backend.Api.GraphQL;
 public class Query
 {
     public Book GetBook()
-        => new Book(
+        => new(
             Title: "Some Book title",
             Year: 1234,
             Author: new Author(

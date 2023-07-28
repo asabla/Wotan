@@ -15,8 +15,10 @@ public interface IBattleBitAPIService
 
 public class BattleBitAPIService : IBattleBitAPIService
 {
-    public static string HTTPClientName = nameof(BattleBitAPIService);
-    public static Uri HTTPBaseURI = new("https://publicapi.battlebit.cloud");
+    public const string HTTPClientName = nameof(BattleBitAPIService);
+    public const string HTTPBase = "https://publicapi.battlebit.cloud";
+
+    public static Uri HTTPBaseURI => new(HTTPBase);
 
     private readonly ILogger<BattleBitAPIService> _logger;
     private readonly IHttpClientFactory _httpClientFactory;
