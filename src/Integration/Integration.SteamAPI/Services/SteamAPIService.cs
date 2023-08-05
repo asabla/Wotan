@@ -11,8 +11,10 @@ namespace Wotan.Integration.SteamAPI.Services;
 
 public class SteamAPIService : ISteamAPIService
 {
-    public static string HTTPClientName = nameof(SteamAPIService);
-    public static Uri HTTPBaseURI = new("https://api.steampowered.com/");
+    public const string HTTPClientName = nameof(SteamAPIService);
+    public const string HTTPBase = "https://api.steampowered.com/";
+
+    public static Uri HTTPBaseURI => new(HTTPBase);
 
     private readonly ILogger<SteamAPIService> _logger;
     private readonly IHttpClientFactory _httpClientFactory;
@@ -108,5 +110,4 @@ public class SteamAPIService : ISteamAPIService
                 },
                 cancellationToken: cancellationToken)
             ?? default!;
-
 }

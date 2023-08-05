@@ -23,7 +23,9 @@ internal class FluentValidationOptions<TOptions> : IValidateOptions<TOptions>
         // Everything is fine, just return value
         if (string.IsNullOrWhiteSpace(_name) is false
             && _name.Equals(name) is false)
+        {
             return ValidateOptionsResult.Skip;
+        }
 
         ArgumentNullException.ThrowIfNull(options);
 
